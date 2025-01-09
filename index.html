@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Color Grid</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grille personnalisée</title>
     <style>
         body {
             display: flex;
@@ -9,52 +11,62 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
         }
-        .grid-container {
-            width: min(100vh, 100vw, 800px);
-            aspect-ratio: 1;
-        }
+
         .grid {
             display: grid;
-            width: 100%;
-            height: 100%;
             gap: 2px;
         }
+
         .cell {
-            aspect-ratio: 1;
-            border: 1px solid #ccc;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .black {
+            background-color: black;
         }
     </style>
 </head>
 <body>
-    <div class="grid-container">
-        <div class="grid" id="colorGrid"></div>
-    </div>
     <script>
-        const colorMap = {
-            '0': 'white',
-            '1': 'black',
-            '2': 'red',
-            '3': 'blue',
-            '4': 'green',
-            '5': 'yellow',
-            '6': 'purple',
-            '7': 'orange'
-        };
-        
-        const grid = document.getElementById('colorGrid');
+        // Récupérer les paramètres de l'URL
         const params = new URLSearchParams(window.location.search);
-        const [rows, cols] = (params.get('x')?.split(',') || [8, 8]).map(Number);
-        const colors = params.get('c')?.split('') || [];
-        
-        grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-        
-        for (let i = 0; i < rows * cols; i++) {
+        const size = parseInt(params.get('size')) || 5; // Taille de la grille par défaut : 5x5
+        const colors = (params.get('colors') || '1,2,3').split(','); // Couleurs par défaut
+
+        // Créer la grille
+        const gridContainer = document.createElement('div');
+        gridContainer.className = 'grid';
+        gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+
+        for (let i = 0; i < size * size; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.style.backgroundColor = colorMap[colors[i]] || 'white';
-            grid.appendChild(cell);
+
+            // Assigner une couleur basée sur les paramètres
+            const colorIndex = i % colors.length; // Répéter les couleurs si nécessaire
+            const color = colors[colorIndex];
+            if (color === '1') cell.classList.add('blue');
+            if (color === '2') cell.classList.add('red');
+            if (color === '3') cell.classList.add('black');
+
+            gridContainer.appendChild(cell);
         }
+
+        // Ajouter la grille au corps du document
+        document.body.appendChild(gridContainer);
     </script>
 </body>
 </html>
