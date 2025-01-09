@@ -43,30 +43,34 @@
     <script>
         // Récupérer les paramètres de l'URL
         const params = new URLSearchParams(window.location.search);
-        const size = parseInt(params.get('size')) || 5; // Taille de la grille par défaut : 5x5
-        const colors = (params.get('colors') || '1,2,3').split(','); // Couleurs par défaut
+        const size = parseInt(params.get('size')) || 3; // Taille de la grille par défaut : 3x3
+        const colors = params.get('color') || ''; // Chaîne de couleurs par défaut vide
 
-        // Créer la grille
-        const gridContainer = document.createElement('div');
-        gridContainer.className = 'grid';
-        gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        // Vérifier que la longueur de colors correspond à size*size
+        if (colors.length !== size * size) {
+            alert('Erreur : La chaîne de couleurs doit correspondre à la taille de la grille (size * size).');
+        } else {
+            // Créer la grille
+            const gridContainer = document.createElement('div');
+            gridContainer.className = 'grid';
+            gridContainer.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
 
-        for (let i = 0; i < size * size; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
+            for (let i = 0; i < size * size; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
 
-            // Assigner une couleur basée sur les paramètres
-            const colorIndex = i % colors.length; // Répéter les couleurs si nécessaire
-            const color = colors[colorIndex];
-            if (color === '1') cell.classList.add('blue');
-            if (color === '2') cell.classList.add('red');
-            if (color === '3') cell.classList.add('black');
+                // Assigner une couleur basée sur le caractère
+                const color = colors[i];
+                if (color === '1') cell.classList.add('blue');
+                if (color === '2') cell.classList.add('red');
+                if (color === '3') cell.classList.add('black');
 
-            gridContainer.appendChild(cell);
+                gridContainer.appendChild(cell);
+            }
+
+            // Ajouter la grille au corps du document
+            document.body.appendChild(gridContainer);
         }
-
-        // Ajouter la grille au corps du document
-        document.body.appendChild(gridContainer);
     </script>
 </body>
 </html>
