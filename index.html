@@ -1,13 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodingWeek 2025 - Instructions</title>
+    <title>Color Grid</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .grid-container {
+            width: min(100vh, 100vw, 800px);
+            aspect-ratio: 1;
+        }
+        .grid {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            gap: 2px;
+        }
+        .cell {
+            aspect-ratio: 1;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-
-    <a href="INSTRUCTIONS.pdf">Download Instructions</a>
-
+    <div class="grid-container">
+        <div class="grid" id="colorGrid"></div>
+    </div>
+    <script>
+        const colorMap = {
+            '0': 'white',
+            '1': 'black',
+            '2': 'red',
+            '3': 'blue',
+            '4': 'green',
+            '5': 'yellow',
+            '6': 'purple',
+            '7': 'orange'
+        };
+        
+        const grid = document.getElementById('colorGrid');
+        const params = new URLSearchParams(window.location.search);
+        const [rows, cols] = (params.get('x')?.split(',') || [8,8]).map(Number);
+        const colors = params.get('c')?.split('') || [];
+        
+        grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        
+        for (let i = 0; i < rows * cols; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.style.backgroundColor = colorMap[colors[i]] || 'white';
+            grid.appendChild(cell);
+        }
+    </script>
 </body>
 </html>
