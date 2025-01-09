@@ -44,7 +44,7 @@
         
         const grid = document.getElementById('colorGrid');
         const params = new URLSearchParams(window.location.search);
-        const [rows, cols] = (params.get('x')?.split(',') || [8,8]).map(Number);
+        const [rows, cols] = (params.get('x')?.split(',') || [8, 8]).map(Number);
         const colors = params.get('c')?.split('') || [];
         
         grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
